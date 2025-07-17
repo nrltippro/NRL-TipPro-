@@ -1,190 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NRL TipPro 2025</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 0;
-      color: #222;
-    }
-    header {
-      background-color: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-    }
-    main {
-      padding: 1rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    h2 {
-      color: #4CAF50;
-    }
-    .game {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem;
-      background: white;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .game-date {
-      font-size: 0.9rem;
-      color: #888;
-    }
-    .links {
-      margin-top: 2rem;
-    }
-    .links a {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #4CAF50;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    .round-selector {
-      margin-bottom: 1rem;
-    }
-    .share-section {
-      padding: 1rem;
-      background-color: #f0f0f0;
-      border-radius: 8px;
-      margin-top: 2rem;
-      text-align: center;
-    }
-    .share-section p {
-      font-weight: bold;
-      margin-bottom: 1rem;
-    }
-    .share-section a {
-      margin: 0 10px;
-      color: #4CAF50;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>NRL TipPro 2025</h1>
-  </header>
-  <main>
-    <div class="round-selector">
-      <label for="round">Select Round: </label>
-      <select id="round"></select>
-    </div>
-    <div id="games"></div>
+<script>
+  const rounds = {
+    20: [
+      { home: "Dolphins", away: "Cowboys", date: "2025-07-18" },
+      { home: "Sharks", away: "Roosters", date: "2025-07-19" },
+      { home: "Panthers", away: "Rabbitohs", date: "2025-07-20" },
+      { home: "Raiders", away: "Eels", date: "2025-07-21" },
+      { home: "Bulldogs", away: "Dragons", date: "2025-07-22" },
+      { home: "Titans", away: "Sea Eagles", date: "2025-07-23" },
+      { home: "Warriors", away: "Knights", date: "2025-07-24" },
+      { home: "Storm", away: "Broncos", date: "2025-07-25" }
+    ],
+    21: [
+      { home: "Dragons", away: "Storm", date: "2025-07-26" },
+      { home: "Roosters", away: "Titans", date: "2025-07-27" },
+      { home: "Rabbitohs", away: "Warriors", date: "2025-07-28" },
+      { home: "Panthers", away: "Sea Eagles", date: "2025-07-29" },
+      { home: "Raiders", away: "Cowboys", date: "2025-07-30" },
+      { home: "Knights", away: "Bulldogs", date: "2025-07-31" },
+      { home: "Tigers", away: "Broncos", date: "2025-08-01" },
+      { home: "Eels", away: "Sharks", date: "2025-08-02" }
+    ],
+    22: [
+      { home: "Titans", away: "Panthers", date: "2025-08-03" },
+      { home: "Sharks", away: "Storm", date: "2025-08-04" },
+      { home: "Roosters", away: "Rabbitohs", date: "2025-08-05" },
+      { home: "Warriors", away: "Cowboys", date: "2025-08-06" },
+      { home: "Knights", away: "Eels", date: "2025-08-07" },
+      { home: "Dragons", away: "Raiders", date: "2025-08-08" },
+      { home: "Bulldogs", away: "Tigers", date: "2025-08-09" },
+      { home: "Sea Eagles", away: "Broncos", date: "2025-08-10" }
+    ],
+    23: [
+      { home: "Titans", away: "Raiders", date: "2025-08-11" },
+      { home: "Storm", away: "Sharks", date: "2025-08-12" },
+      { home: "Warriors", away: "Eels", date: "2025-08-13" },
+      { home: "Broncos", away: "Rabbitohs", date: "2025-08-14" },
+      { home: "Tigers", away: "Knights", date: "2025-08-15" },
+      { home: "Cowboys", away: "Dragons", date: "2025-08-16" },
+      { home: "Bulldogs", away: "Sea Eagles", date: "2025-08-17" },
+      { home: "Panthers", away: "Roosters", date: "2025-08-18" }
+    ],
+    24: [
+      { home: "Raiders", away: "Titans", date: "2025-08-19" },
+      { home: "Storm", away: "Tigers", date: "2025-08-20" },
+      { home: "Sharks", away: "Broncos", date: "2025-08-21" },
+      { home: "Knights", away: "Warriors", date: "2025-08-22" },
+      { home: "Cowboys", away: "Sea Eagles", date: "2025-08-23" },
+      { home: "Dragons", away: "Rabbitohs", date: "2025-08-24" },
+      { home: "Eels", away: "Roosters", date: "2025-08-25" },
+      { home: "Bulldogs", away: "Panthers", date: "2025-08-26" }
+    ],
+    25: [
+      { home: "Sharks", away: "Titans", date: "2025-08-27" },
+      { home: "Sea Eagles", away: "Rabbitohs", date: "2025-08-28" },
+      { home: "Knights", away: "Storm", date: "2025-08-29" },
+      { home: "Broncos", away: "Dragons", date: "2025-08-30" },
+      { home: "Tigers", away: "Eels", date: "2025-08-31" },
+      { home: "Cowboys", away: "Roosters", date: "2025-09-01" },
+      { home: "Panthers", away: "Bulldogs", date: "2025-09-02" },
+      { home: "Raiders", away: "Warriors", date: "2025-09-03" }
+    ],
+    26: [
+      { home: "Sharks", away: "Cowboys", date: "2025-09-04" },
+      { home: "Storm", away: "Tigers", date: "2025-09-05" },
+      { home: "Raiders", away: "Dragons", date: "2025-09-06" },
+      { home: "Roosters", away: "Knights", date: "2025-09-07" },
+      { home: "Bulldogs", away: "Rabbitohs", date: "2025-09-08" },
+      { home: "Eels", away: "Warriors", date: "2025-09-09" },
+      { home: "Panthers", away: "Titans", date: "2025-09-10" },
+      { home: "Broncos", away: "Sea Eagles", date: "2025-09-11" }
+    ],
+    27: [
+      { home: "Cowboys", away: "Sharks", date: "2025-09-12" },
+      { home: "Tigers", away: "Roosters", date: "2025-09-13" },
+      { home: "Storm", away: "Warriors", date: "2025-09-14" },
+      { home: "Dragons", away: "Eels", date: "2025-09-15" },
+      { home: "Rabbitohs", away: "Knights", date: "2025-09-16" },
+      { home: "Sea Eagles", away: "Titans", date: "2025-09-17" },
+      { home: "Bulldogs", away: "Raiders", date: "2025-09-18" },
+      { home: "Broncos", away: "Panthers", date: "2025-09-19" }
+    ]
+  };
 
-    <div class="links">
-      <h2>Helpful Links</h2>
-      <a href="https://www.nrl.com/draw/" target="_blank">🗓️ NRL Official Draw</a>
-      <a href="https://www.nrl.com/ladder/" target="_blank">📊 Current NRL Ladder</a>
-      <a href="https://www.nrl.com/results/" target="_blank">🏉 Last Week's Results</a>
-      <a href="https://www.facebook.com/pacificracingtips" target="_blank" style="color: red; font-weight: bold;">🔥 Pacific Racing Tips – PNG's Premier NRL Tipping Guide</a>
-      <a href="https://www.nrl.com/live-scores/" target="_blank">📺 Live Scores on NRL.com</a>
-      <a href="https://www.pngfacts.com/png-information-directory/pacific-racing-and-sports-betting-guides" target="_blank">🏆 PNG Facts – Pacific Racing & Sports Betting Guides</a>
-      <a href="https://www.pngonlinetrade.com/png-betting-tips/how-to-win-on-pacific-racing-betting-nrl-games-a-guide-to-bet-types-and-strategies" target="_blank">📚 PNG Online Trade – NRL Betting Tips</a>
-    </div>
+  const roundSelector = document.getElementById("round");
+  const gamesDiv = document.getElementById("games");
 
-    <div class="share-section">
-      <p>📊 You are visitor number: <span id="visitor-count">...</span></p>
-      <p class="font-semibold">🔗 Share this app:</p>
-      <div>
-        <a href="https://wa.me/?text=Check%20out%20this%20free%20NRL%20Tips%20App%20%F0%9F%91%80%20https%3A%2F%2Fnrltippro.github.io%2FNRL-TipPro%2F" target="_blank">WhatsApp</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fnrltippro.github.io%2FNRL-TipPro%2F" target="_blank">Facebook</a>
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fnrltippro.github.io%2FNRL-TipPro%2F" target="_blank">LinkedIn</a>
-        <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20NRL%20Tips%20app!&url=https%3A%2F%2Fnrltippro.github.io%2FNRL-TipPro%2F" target="_blank">X</a>
-      </div>
-    </div>
-  </main>
+  Object.keys(rounds).forEach(round => {
+    const option = document.createElement("option");
+    option.value = round;
+    option.textContent = `Round ${round}`;
+    roundSelector.appendChild(option);
+  });
 
-  <script>
-    const rounds = {
-      20: [
-        { home: "Dolphins", away: "Cowboys", date: "2025-07-18" },
-        { home: "Sharks", away: "Roosters", date: "2025-07-19" },
-        { home: "Panthers", away: "Rabbitohs", date: "2025-07-20" },
-        { home: "Raiders", away: "Eels", date: "2025-07-21" },
-        { home: "Bulldogs", away: "Dragons", date: "2025-07-22" }
-      ],
-      21: [
-        { home: "Dragons", away: "Storm", date: "2025-07-25" },
-        { home: "Roosters", away: "Titans", date: "2025-07-26" }
-      ],
-      22: [
-        { home: "Warriors", away: "Wests Tigers", date: "2025-07-27" },
-        { home: "Eels", away: "Storm", date: "2025-07-28" },
-        { home: "Broncos", away: "Bulldogs", date: "2025-07-29" }
-      ],
-      23: [
-        { home: "Rabbitohs", away: "Storm", date: "2025-08-01" },
-        { home: "Titans", away: "Sharks", date: "2025-08-02" },
-        { home: "Eels", away: "Panthers", date: "2025-08-03" }
-      ],
-      24: [
-        { home: "Panthers", away: "Storm", date: "2025-08-08" },
-        { home: "Sea Eagles", away: "Warriors", date: "2025-08-09" },
-        { home: "Roosters", away: "Eels", date: "2025-08-10" }
-      ],
-      25: [
-        { home: "Sea Eagles", away: "Broncos", date: "2025-08-15" },
-        { home: "Raiders", away: "Bulldogs", date: "2025-08-16" }
-      ],
-      26: [
-        { home: "Cowboys", away: "Storm", date: "2025-08-22" },
-        { home: "Bulldogs", away: "Sea Eagles", date: "2025-08-23" },
-        { home: "Panthers", away: "Rabbitohs", date: "2025-08-24" }
-      ],
-      27: [
-        { home: "Broncos", away: "Storm", date: "2025-08-29" },
-        { home: "Sea Eagles", away: "Warriors", date: "2025-08-30" },
-        { home: "Roosters", away: "Rabbitohs", date: "2025-08-31" }
-      ]
-    };
+  roundSelector.addEventListener("change", () => {
+    const selectedRound = roundSelector.value;
+    renderGames(selectedRound);
+  });
 
-    const roundSelector = document.getElementById("round");
-    const gamesDiv = document.getElementById("games");
-
-    Object.keys(rounds).forEach(round => {
-      const option = document.createElement("option");
-      option.value = round;
-      option.textContent = `Round ${round}`;
-      roundSelector.appendChild(option);
+  function renderGames(round) {
+    gamesDiv.innerHTML = "";
+    rounds[round].forEach(game => {
+      const div = document.createElement("div");
+      div.className = "game";
+      div.innerHTML = `
+        <div>
+          <span>${game.home}</span> vs <span>${game.away}</span>
+          <div class="game-date">${game.date}</div>
+        </div>`;
+      gamesDiv.appendChild(div);
     });
+  }
 
-    roundSelector.addEventListener("change", () => {
-      const selectedRound = roundSelector.value;
-      renderGames(selectedRound);
+  roundSelector.value = "20";
+  renderGames("20");
+
+  fetch('https://api.countapi.xyz/hit/nrltippro.github.io/visits')
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('visitor-count').textContent = data.value;
     });
-
-    function renderGames(round) {
-      gamesDiv.innerHTML = "";
-      rounds[round].forEach(game => {
-        const div = document.createElement("div");
-        div.className = "game";
-        div.innerHTML = `
-          <div>
-            <span>${game.home}</span> vs <span>${game.away}</span>
-            <div class="game-date">${game.date}</div>
-          </div>`;
-        gamesDiv.appendChild(div);
-      });
-    }
-
-    roundSelector.value = "20";
-    renderGames("20");
-
-    fetch('https://api.countapi.xyz/hit/nrltippro.github.io/visits')
-      .then(res => res.json())
-      .then(data => {
-        document.getElementById('visitor-count').textContent = data.value;
-      });
-  </script>
-</body>
-</html>
+</script>
