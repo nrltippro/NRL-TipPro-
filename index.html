@@ -35,6 +35,10 @@
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .game-date {
+      font-size: 0.9rem;
+      color: #888;
+    }
     .links {
       margin-top: 2rem;
     }
@@ -103,44 +107,44 @@
   <script>
     const rounds = {
       20: [
-        { home: "Dolphins", away: "Cowboys" },
-        { home: "Sharks", away: "Roosters" },
-        { home: "Panthers", away: "Rabbitohs" },
-        { home: "Raiders", away: "Eels" },
-        { home: "Bulldogs", away: "Dragons" }
+        { home: "Dolphins", away: "Cowboys", date: "2025-07-18" },
+        { home: "Sharks", away: "Roosters", date: "2025-07-19" },
+        { home: "Panthers", away: "Rabbitohs", date: "2025-07-20" },
+        { home: "Raiders", away: "Eels", date: "2025-07-21" },
+        { home: "Bulldogs", away: "Dragons", date: "2025-07-22" }
       ],
       21: [
-        { home: "Dragons", away: "Storm" },
-        { home: "Roosters", away: "Titans" }
+        { home: "Dragons", away: "Storm", date: "2025-07-25" },
+        { home: "Roosters", away: "Titans", date: "2025-07-26" }
       ],
       22: [
-        { home: "Warriors", away: "Wests Tigers" },
-        { home: "Eels", away: "Storm" },
-        { home: "Broncos", away: "Bulldogs" }
+        { home: "Warriors", away: "Wests Tigers", date: "2025-07-27" },
+        { home: "Eels", away: "Storm", date: "2025-07-28" },
+        { home: "Broncos", away: "Bulldogs", date: "2025-07-29" }
       ],
       23: [
-        { home: "Rabbitohs", away: "Storm" },
-        { home: "Titans", away: "Sharks" },
-        { home: "Eels", away: "Panthers" }
+        { home: "Rabbitohs", away: "Storm", date: "2025-08-01" },
+        { home: "Titans", away: "Sharks", date: "2025-08-02" },
+        { home: "Eels", away: "Panthers", date: "2025-08-03" }
       ],
       24: [
-        { home: "Panthers", away: "Storm" },
-        { home: "Sea Eagles", away: "Warriors" },
-        { home: "Roosters", away: "Eels" }
+        { home: "Panthers", away: "Storm", date: "2025-08-08" },
+        { home: "Sea Eagles", away: "Warriors", date: "2025-08-09" },
+        { home: "Roosters", away: "Eels", date: "2025-08-10" }
       ],
       25: [
-        { home: "Sea Eagles", away: "Broncos" },
-        { home: "Raiders", away: "Bulldogs" }
+        { home: "Sea Eagles", away: "Broncos", date: "2025-08-15" },
+        { home: "Raiders", away: "Bulldogs", date: "2025-08-16" }
       ],
       26: [
-        { home: "Cowboys", away: "Storm" },
-        { home: "Bulldogs", away: "Sea Eagles" },
-        { home: "Panthers", away: "Rabbitohs" }
+        { home: "Cowboys", away: "Storm", date: "2025-08-22" },
+        { home: "Bulldogs", away: "Sea Eagles", date: "2025-08-23" },
+        { home: "Panthers", away: "Rabbitohs", date: "2025-08-24" }
       ],
       27: [
-        { home: "Broncos", away: "Storm" },
-        { home: "Sea Eagles", away: "Warriors" },
-        { home: "Roosters", away: "Rabbitohs" }
+        { home: "Broncos", away: "Storm", date: "2025-08-29" },
+        { home: "Sea Eagles", away: "Warriors", date: "2025-08-30" },
+        { home: "Roosters", away: "Rabbitohs", date: "2025-08-31" }
       ]
     };
 
@@ -164,7 +168,11 @@
       rounds[round].forEach(game => {
         const div = document.createElement("div");
         div.className = "game";
-        div.innerHTML = `<span>${game.home}</span> vs <span>${game.away}</span>`;
+        div.innerHTML = `
+          <div>
+            <span>${game.home}</span> vs <span>${game.away}</span>
+            <div class="game-date">${game.date}</div>
+          </div>`;
         gamesDiv.appendChild(div);
       });
     }
