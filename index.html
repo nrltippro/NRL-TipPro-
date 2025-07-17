@@ -80,17 +80,21 @@
 
         // Function to render the games for a specific round
         function renderGames(round) {
-            gamesDiv.innerHTML = "";
-            rounds[round].forEach(game => {
-                const div = document.createElement("div");
-                div.className = "game";
-                div.innerHTML = `
-                    <div>
-                        <span>${game.home}</span> vs <span>${game.away}</span>
-                        <div class="game-date">${game.date}</div>
-                    </div>`;
-                gamesDiv.appendChild(div);
-            });
+            gamesDiv.innerHTML = ""; // Clear previous games
+            if (rounds[round]) {
+                rounds[round].forEach(game => {
+                    const div = document.createElement("div");
+                    div.className = "game";
+                    div.innerHTML = `
+                        <div>
+                            <span>${game.home}</span> vs <span>${game.away}</span>
+                            <div class="game-date">${game.date}</div>
+                        </div>`;
+                    gamesDiv.appendChild(div);
+                });
+            } else {
+                gamesDiv.innerHTML = "No games available for this round.";
+            }
         }
 
         // Default to Round 20 on initial load
@@ -102,7 +106,11 @@
             .then(res => res.json())
             .then(data => {
                 document.getElementById('visitor-count').textContent = `Visitor Count: ${data.value}`;
+            })
+            .catch(error => {
+                console.error("Visitor count error:", error);
             });
+
     </script>
 
 </body>
