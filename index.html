@@ -1,141 +1,89 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NRL TipPro</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NRL TipPro R20–27</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f9f9f9;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #004d99;
-      color: white;
-      padding: 1em;
-      text-align: center;
-    }
-    select {
-      display: block;
-      margin: 1em auto;
-      padding: 0.5em;
-      font-size: 16px;
-    }
-    .fixtures {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 1em;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    .match {
-      border-bottom: 1px solid #ccc;
-      padding: 0.5em 0;
-    }
-    .match:last-child {
-      border-bottom: none;
-    }
-    .footer {
-      text-align: center;
-      margin-top: 2em;
-      padding: 1em;
-      background-color: #e6e6e6;
-    }
-    .footer a {
-      margin: 0 0.5em;
-      text-decoration: none;
-      color: #004d99;
-      font-weight: bold;
-    }
+    body { font-family: Arial,sans-serif; margin:0; padding:1rem; background:#f5f5f5; }
+    header { background:#004d99; color:#fff; padding:1rem; text-align:center; }
+    select { font-size:1rem; padding:0.5rem; width:100%; max-width:300px; display:block; margin:1rem auto;}
+    .fixtures { max-width:600px; margin:auto; background:#fff; padding:1rem; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+    .match { margin-bottom:0.75rem; }
+    .match strong { color:#004d99; }
+    .date { display:block; font-size:0.9rem; color:#555; }
+    .footer { text-align:center; padding:1rem; margin-top:1rem; border-top:1px solid #ccc; }
+    .footer a { margin:0 0.5rem; font-weight:bold; color:#004d99; text-decoration:none; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>NRL TipPro - 2025 Rounds 20 to 27</h1>
-  </header>  <select id="roundSelect">
-    <option value="20">Round 20</option>
-    <option value="21">Round 21</option>
-    <option value="22">Round 22</option>
-    <option value="23">Round 23</option>
-    <option value="24">Round 24</option>
-    <option value="25">Round 25</option>
-    <option value="26">Round 26</option>
-    <option value="27">Round 27</option>
-  </select>  <div class="fixtures" id="fixtures"></div>  <div class="footer">
-    <p>
-      <a href="https://www.nrl.com/draw/" target="_blank">NRL Draw</a>
-      <a href="https://www.pacificracingpng.com/tips" target="_blank"><strong>Pacific Racing PNG Tips</strong></a>
-      <a href="https://www.pngfacts.com/" target="_blank">PNG Facts</a>
-      <a href="https://www.pngtrademedia.com/" target="_blank">PNG Trade</a>
-    </p>
-  </div>  <script>
+  <header><h1>NRL TipPro – Rounds 20–27</h1></header>
+  <select id="roundSelect">
+    <option value="20">Round 20</option><option value="21">Round 21</option><option value="22">Round 22</option>
+    <option value="23">Round 23</option><option value="24">Round 24</option><option value="25">Round 25</option>
+    <option value="26">Round 26</option><option value="27">Round 27</option>
+  </select>
+  <div class="fixtures" id="fixtures"></div>
+  <div class="footer">
+    <a href="https://www.nrl.com/draw/" target="_blank">NRL Draw</a>
+    <a href="https://www.pacificracingpng.com/tips" target="_blank"><strong>Pacific Racing PNG Tips</strong></a>
+    <a href="https://www.pngfacts.com" target="_blank">PNG Facts</a>
+    <a href="https://www.pngtrademedia.com" target="_blank">PNG Trade</a>
+  </div>
+
+  <script>
     const fixtures = {
       20: [
-        { home: "Storm", away: "Roosters", date: "Thu 17 Jul" },
-        { home: "Sharks", away: "Panthers", date: "Fri 18 Jul" },
-        { home: "Rabbitohs", away: "Cowboys", date: "Fri 18 Jul" },
-        { home: "Titans", away: "Raiders", date: "Sat 19 Jul" },
-        { home: "Eels", away: "Broncos", date: "Sat 19 Jul" },
-        { home: "Sea Eagles", away: "Tigers", date: "Sat 19 Jul" },
-        { home: "Bulldogs", away: "Warriors", date: "Sun 20 Jul" },
-        { home: "Dragons", away: "Knights", date: "Sun 20 Jul" },
+        { h:"Dolphins", a:"Cowboys", d:"Thu 17 Jul, 7:50 pm" },
+        { h:"Sharks", a:"Roosters", d:"Fri 18 Jul, 6:00 pm" },
+        { h:"Panthers", a:"Rabbitohs", d:"Fri 18 Jul, 8:00 pm" },
+        { h:"Raiders", a:"Eels", d:"Sat 19 Jul, 3:00 pm" },
+        { h:"Bulldogs", a:"Dragons", d:"Sat 19 Jul, 5:30 pm" },
+        { h:"Storm", a:"Sea Eagles", d:"Sat 19 Jul, 7:35 pm" },
+        { h:"Wests Tigers", a:"Titans", d:"Sun 20 Jul, 2:00 pm" },
+        { h:"Knights", a:"Warriors", d:"Sun 20 Jul, 4:05 pm" }
       ],
       21: [
-        { home: "Broncos", away: "Storm", date: "Thu 24 Jul" },
-        { home: "Cowboys", away: "Titans", date: "Fri 25 Jul" },
-        { home: "Knights", away: "Roosters", date: "Fri 25 Jul" },
-        { home: "Warriors", away: "Raiders", date: "Sat 26 Jul" },
-        { home: "Tigers", away: "Bulldogs", date: "Sat 26 Jul" },
-        { home: "Panthers", away: "Sea Eagles", date: "Sat 26 Jul" },
-        { home: "Rabbitohs", away: "Dragons", date: "Sun 27 Jul" },
-        { home: "Sharks", away: "Eels", date: "Sun 27 Jul" },
+        { h:"Roosters", a:"Storm", d:"Thu 24 Jul, 7:50 pm" },
+        { h:"Cowboys", a:"Dragons", d:"Fri 25 Jul, 6:00 pm" },
+        { h:"Broncos", a:"Eels", d:"Fri 25 Jul, 8:00 pm" },
+        { h:"Warriors", a:"Titans", d:"Sat 26 Jul, 3:00 pm" },
+        { h:"Panthers", a:"Wests Tigers", d:"Sat 26 Jul, 5:30 pm" },
+        { h:"Rabbitohs", a:"Sharks", d:"Sat 26 Jul, 7:35 pm" },
+        { h:"Raiders", a:"Knights", d:"Sun 27 Jul, 2:00 pm" },
+        { h:"Bulldogs", a:"Sea Eagles", d:"Sun 27 Jul, 4:05 pm" }
       ],
       22: [
-        { home: "Knights", away: "Storm", date: "Thu 31 Jul" },
-        { home: "Roosters", away: "Broncos", date: "Fri 1 Aug" },
-        { home: "Titans", away: "Panthers", date: "Fri 1 Aug" },
-        { home: "Raiders", away: "Cowboys", date: "Sat 2 Aug" },
-        { home: "Sea Eagles", away: "Rabbitohs", date: "Sat 2 Aug" },
-        { home: "Warriors", away: "Tigers", date: "Sat 2 Aug" },
-        { home: "Dragons", away: "Sharks", date: "Sun 3 Aug" },
-        { home: "Eels", away: "Bulldogs", date: "Sun 3 Aug" },
+        { h:"Eels", a:"Storm", d:"Thu 31 Jul, 7:50 pm" },
+        { h:"Warriors", a:"Dolphins", d:"Fri 1 Aug, 6:00 pm" },
+        { h:"Broncos", a:"Rabbitohs", d:"Fri 1 Aug, 8:00 pm" },
+        { h:"Titans", a:"Panthers", d:"Sat 2 Aug, 3:00 pm" },
+        { h:"Dragons", a:"Raiders", d:"Sat 2 Aug, 5:30 pm" },
+        { h:"Sea Eagles", a:"Roosters", d:"Sat 2 Aug, 7:35 pm" },
+        { h:"Wests Tigers", a:"Bulldogs", d:"Sun 3 Aug, 2:00 pm" },
+        { h:"Sharks", a:"Cowboys", d:"Sun 3 Aug, 4:05 pm" }
       ],
-      23: [
-        { home: "Fixture", away: "TBA", date: "7 Aug – 10 Aug" }
-      ],
-      24: [
-        { home: "Fixture", away: "TBA", date: "14 Aug – 17 Aug" }
-      ],
-      25: [
-        { home: "Fixture", away: "TBA", date: "21 Aug – 24 Aug" }
-      ],
-      26: [
-        { home: "Fixture", away: "TBA", date: "28 Aug – 31 Aug" }
-      ],
-      27: [
-        { home: "Fixture", away: "TBA", date: "4 Sep – 7 Sep" }
-      ],
+      23: new Array(8).fill({ h:"TBA", a:"TBA", d:"Fixture – Date TBA" }),
+      24: new Array(8).fill({ h:"TBA", a:"TBA", d:"Fixture – Date TBA" }),
+      25: new Array(8).fill({ h:"TBA", a:"TBA", d:"Fixture – Date TBA" }),
+      26: new Array(8).fill({ h:"TBA", a:"TBA", d:"Fixture – Date TBA" }),
+      27: new Array(8).fill({ h:"TBA", a:"TBA", d:"Fixture – Date TBA" }),
     };
 
-    const fixturesDiv = document.getElementById("fixtures");
-    const roundSelect = document.getElementById("roundSelect");
+    const sel = document.getElementById("roundSelect");
+    const out = document.getElementById("fixtures");
 
-    function displayFixtures(round) {
-      const roundMatches = fixtures[round] || [];
-      fixturesDiv.innerHTML = roundMatches.map(match => `
+    function render(round){
+      out.innerHTML = fixtures[round].map(m => `
         <div class="match">
-          <strong>${match.home}</strong> vs <strong>${match.away}</strong><br />
-          <small>${match.date}</small>
+          <strong>${m.h}</strong> vs <strong>${m.a}</strong>
+          <span class="date">${m.d}</span>
         </div>
       `).join("");
     }
 
-    roundSelect.addEventListener("change", (e) => {
-      displayFixtures(e.target.value);
-    });
-
-    displayFixtures("20"); // default round on load
-  </script></body>
+    sel.addEventListener("change", e => render(e.target.value));
+    render("20");
+  </script>
+</body>
 </html>
