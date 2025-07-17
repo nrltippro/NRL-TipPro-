@@ -1,84 +1,181 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NRL TipPro 2025</title>
+  <title>NRL TipPro</title>
   <style>
-    /* Basic styles... */
-    body { font-family: Arial; background: #f5f5f5; margin:0; padding:1rem; }
-    header { background:#4CAF50; color:white; padding:1rem; text-align:center; }
-    .game { background:white; padding:0.5rem; margin:0.5rem 0; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-    .game-date { color:#777; font-size:0.9rem; }
-    .round-selector, .share-section, .links { margin-top:1rem; }
-    .links a, .share-section a { display:inline-block; margin:4px; color:#4CAF50; text-decoration:none; font-weight:bold; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #e6f2ff;
+      color: #003366;
+    }
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 1em;
+      text-align: center;
+    }
+    .round-selector {
+      text-align: center;
+      margin: 1em 0;
+    }
+    .games {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .game {
+      background: white;
+      border: 1px solid #003366;
+      border-radius: 10px;
+      margin: 0.5em;
+      padding: 1em;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+    footer {
+      background: #003366;
+      color: white;
+      padding: 1em;
+      text-align: center;
+      font-size: 0.9em;
+    }
+    a {
+      color: #ffcc00;
+    }
+    strong {
+      color: #ff6600;
+    }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>NRL TipPro 2025</h1>
+    <h1>NRL TipPro - PNG Edition</h1>
+    <p>Round-by-Round Tips | Ladder | Results</p>
   </header>
-
   <div class="round-selector">
-    <label>Select Round:</label>
-    <select id="round"></select>
+    <label for="round">Select Round:</label>
+    <select id="round" onchange="showGames()">
+      <option value="20">Round 20</option>
+      <option value="21">Round 21</option>
+      <option value="22">Round 22</option>
+      <option value="23">Round 23</option>
+      <option value="24">Round 24</option>
+      <option value="25">Round 25</option>
+      <option value="26">Round 26</option>
+      <option value="27">Round 27</option>
+    </select>
   </div>
-
-  <div id="games"></div>
-
-  <div class="links">
-    <a href="https://www.nrl.com/draw/" target="_blank">🗓️ Official Draw</a>
-    <a href="https://www.nrl.com/ladder/" target="_blank">📊 Ladder</a>
-    <a href="https://www.nrl.com/results/" target="_blank">🏉 Results</a>
-    <a href="https://www.pngfacts.com/...guides" target="_blank">🏆 PNG Facts Guides</a>
-    <a href="https://www.pngonlinetrade.com/..." target="_blank">📚 PNG Online Trade Tips</a>
-  </div>
-
-  <div class="share-section">
-    <p>You are visitor number: <span id="visitor-count">...</span></p>
-    <p>Share this app: 
-      <a href="https://wa.me/?text=NRLTipPro+app..." target="_blank">WhatsApp</a>
-      <a href="https://facebook.com/sharer?" target="_blank">Facebook</a>
-      <a href="https://twitter.com/intent/tweet?url=..." target="_blank">X</a>
-      <a href="https://www.linkedin.com/sharing?url=..." target="_blank">LinkedIn</a>
+  <div id="games" class="games"></div>
+  <footer>
+    <p>
+      🔗 <a href="https://www.nrl.com/draw/" target="_blank">Official NRL Fixtures</a> | 
+      <strong><a href="https://www.pacificracingpng.com/tips" target="_blank">Pacific Racing PNG Tipping Guide</a></strong> | 
+      🔗 <a href="https://www.pngfacts.com" target="_blank">PNG Facts</a> | 
+      🔗 <a href="https://www.pngtrade.net" target="_blank">PNG Trade</a>
     </p>
-  </div>
-
+    <p>&copy; 2025 NRL TipPro | Made for fans in PNG 🇵🇬</p>
+  </footer>
   <script>
-    const rounds = {
+    const fixtures = {
       20: [
-        { home:"Dolphins",away:"Cowboys",date:"2025-07-18" },
-        { home:"Sharks",away:"Roosters",date:"2025-07-19" },
-        { home:"Panthers",away:"Rabbitohs",date:"2025-07-20" },
-        { home:"Raiders",away:"Eels",date:"2025-07-21" },
-        { home:"Bulldogs",away:"Dragons",date:"2025-07-22" },
-        { home:"Titans",away:"Sea Eagles",date:"2025-07-23" },
-        { home:"Warriors",away:"Knights",date:"2025-07-24" },
-        { home:"Storm",away:"Broncos",date:"2025-07-25" }
+        "Thursday 18 July - Wests Tigers vs Dolphins (7:50pm)",
+        "Friday 19 July - Bulldogs vs Sharks (6:00pm)",
+        "Friday 19 July - Broncos vs Dragons (7:55pm)",
+        "Saturday 20 July - Warriors vs Raiders (3:00pm)",
+        "Saturday 20 July - Cowboys vs Sea Eagles (5:30pm)",
+        "Saturday 20 July - Panthers vs Storm (7:35pm)",
+        "Sunday 21 July - Titans vs Roosters (2:00pm)",
+        "Sunday 21 July - Rabbitohs vs Eels (4:05pm)"
       ],
-      /* Add rounds 21-27 here similarly */
-    };
+      21: [
+        "Thursday 25 July - Sea Eagles vs Bulldogs (7:50pm)",
+        "Friday 26 July - Sharks vs Titans (6:00pm)",
+        "Friday 26 July - Storm vs Rabbitohs (7:55pm)",
+        "Saturday 27 July - Eels vs Cowboys (3:00pm)",
+        "Saturday 27 July - Roosters vs Panthers (5:30pm)",
+        "Saturday 27 July - Dolphins vs Broncos (7:35pm)",
+        "Sunday 28 July - Dragons vs Warriors (2:00pm)",
+        "Sunday 28 July - Raiders vs Wests Tigers (4:05pm)"
+      ],
+      22: [
+        "Thursday 1 August - Broncos vs Rabbitohs (7:50pm)",
+        "Friday 2 August - Bulldogs vs Cowboys (6:00pm)",
+        "Friday 2 August - Storm vs Titans (7:55pm)",
+        "Saturday 3 August - Panthers vs Raiders (3:00pm)",
+        "Saturday 3 August - Sharks vs Sea Eagles (5:30pm)",
+        "Saturday 3 August - Eels vs Dragons (7:35pm)",
+        "Sunday 4 August - Dolphins vs Warriors (2:00pm)",
+        "Sunday 4 August - Roosters vs Wests Tigers (4:05pm)"
+      ],
+      23: [
+        "Fixture – Date TBA: Rabbitohs vs Dragons",
+        "Fixture – Date TBA: Cowboys vs Dolphins",
+        "Fixture – Date TBA: Sea Eagles vs Eels",
+        "Fixture – Date TBA: Titans vs Roosters",
+        "Fixture – Date TBA: Raiders vs Storm",
+        "Fixture – Date TBA: Bulldogs vs Panthers",
+        "Fixture – Date TBA: Sharks vs Broncos",
+        "Fixture – Date TBA: Wests Tigers vs Warriors"
+      ],
+      24: [
+        "Fixture – Date TBA: Panthers vs Eels",
+        "Fixture – Date TBA: Storm vs Dolphins",
+        "Fixture – Date TBA: Warriors vs Sharks",
+        "Fixture – Date TBA: Cowboys vs Rabbitohs",
+        "Fixture – Date TBA: Dragons vs Bulldogs",
+        "Fixture – Date TBA: Sea Eagles vs Broncos",
+        "Fixture – Date TBA: Roosters vs Raiders",
+        "Fixture – Date TBA: Titans vs Wests Tigers"
+      ],
+      25: [
+        "Fixture – Date TBA: Broncos vs Storm",
+        "Fixture – Date TBA: Rabbitohs vs Panthers",
+        "Fixture – Date TBA: Warriors vs Cowboys",
+        "Fixture – Date TBA: Eels vs Titans",
+        "Fixture – Date TBA: Dolphins vs Bulldogs",
+        "Fixture – Date TBA: Raiders vs Dragons",
+        "Fixture – Date TBA: Sea Eagles vs Roosters",
+        "Fixture – Date TBA: Wests Tigers vs Sharks"
+      ],
+      26: [
+        "Fixture – Date TBA: Panthers vs Warriors",
+        "Fixture – Date TBA: Cowboys vs Sharks",
+        "Fixture – Date TBA: Storm vs Roosters",
+        "Fixture – Date TBA: Titans vs Sea Eagles",
+        "Fixture – Date TBA: Bulldogs vs Rabbitohs",
+        "Fixture – Date TBA: Broncos vs Raiders",
+        "Fixture – Date TBA: Dragons vs Dolphins",
+        "Fixture – Date TBA: Eels vs Wests Tigers"
+      ],
+      27: [
+        "Fixture – Date TBA: Roosters vs Rabbitohs",
+        "Fixture – Date TBA: Broncos vs Cowboys",
+        "Fixture – Date TBA: Storm vs Bulldogs",
+        "Fixture – Date TBA: Panthers vs Titans",
+        "Fixture – Date TBA: Sea Eagles vs Dragons",
+        "Fixture – Date TBA: Raiders vs Warriors",
+        "Fixture – Date TBA: Sharks vs Eels",
+        "Fixture – Date TBA: Dolphins vs Wests Tigers"
+      ]
+    };function showGames() {
+  const round = document.getElementById("round").value;
+  const gamesDiv = document.getElementById("games");
+  gamesDiv.innerHTML = "";
 
-    const rs = document.getElementById("round"), gd = document.getElementById("games");
-    Object.keys(rounds).forEach(r => {
-      const o = document.createElement("option");
-      o.value = r; o.textContent = `Round ${r}`;
-      rs.appendChild(o);
-    });
-    rs.addEventListener("change", ()=> render(rs.value));
-    function render(r){
-      gd.innerHTML = "";
-      rounds[r].forEach(g=>{
-        const d=document.createElement("div"); d.className="game";
-        d.innerHTML=`<div>${g.home} vs ${g.away}<div class="game-date">${g.date}</div></div>`;
-        gd.appendChild(d);
-      });
-    }
-    rs.value="20"; render("20");
-    fetch('https://api.countapi.xyz/hit/nrltippro.github.io/visits')
-      .then(r=>r.json()).then(d=>document.getElementById("visitor-count").textContent=d.value);
+  fixtures[round].forEach(game => {
+    const div = document.createElement("div");
+    div.className = "game";
+    div.textContent = game;
+    gamesDiv.appendChild(div);
+  });
+}
+
+// Load round 20 by default
+document.addEventListener("DOMContentLoaded", showGames);
+
   </script>
-
 </body>
 </html>
