@@ -25,7 +25,20 @@
         ];
 
         const [accumulator, setAccumulator] = React.useState([]);
-        const [stake, setStake] = React.useState(0);
+        const [stake, setStake] = React.useState(0);function App() {
+  const [games, setGames] = React.useState([]);
+  const [accumulator, setAccumulator] = React.useState([]);
+  const [stake, setStake] = React.useState(0);
+
+  const addToAccumulator = (gameId, team, odds) => {
+    setAccumulator([...accumulator, { gameId, team, odds }]);
+  };
+
+  const removeFromAccumulator = (gameId) => {
+    setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
+  };
+
+  // ... rest of your logic
 
         const addToAccumulator = (gameId, team, odds) => {
           setAccumulator([...accumulator, { gameId, team, odds }]);
