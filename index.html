@@ -1,178 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NRL TipPro 2025</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fffbf2;
-      color: #333;
-      padding: 1rem;
-    }
-    h1 {
-      background-color: #006400;
-      color: white;
-      padding: 0.5rem;
-      text-align: center;
-      border-radius: 10px;
-    }
-    .game, .round-selector {
-      margin: 1rem 0;
-      padding: 1rem;
-      background: #f0f0f0;
-      border-radius: 10px;
-    }
-    button {
-      margin-top: 0.5rem;
-      padding: 0.4rem 1rem;
-      border: none;
-      border-radius: 5px;
-      background-color: #008000;
-      color: white;
-      cursor: pointer;
-    }
-    .disabled {
-      background-color: #999 !important;
-      cursor: not-allowed;
-    }
-    .accumulator {
-      background: #e6ffe6;
-      padding: 1rem;
-      border-radius: 10px;
-      margin: 1rem 0;
-    }
-    .footer {
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-    select, input {
-      padding: 0.3rem;
-      margin-top: 0.5rem;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>🏉 NRL TipPro 2025</h1>
-
-  <div class="round-selector">
-    <label for="roundSelect"><strong>Select Round:</strong></label>
-    <select id="roundSelect"></select>
-  </div>
-
-  <div id="gamesContainer"></div>
-
-  <div class="accumulator" id="accumulatorSection">
-    <h3>💰 Accumulator</h3>
-    <label>Stake: $<input type="number" id="stakeInput" value="10" min="1" /></label>
-    <p>Total Odds: <span id="totalOdds">0.00</span></p>
-    <p>Potential Win: $<span id="potentialWin">0.00</span></p>
-    <div id="accumulatorList"></div>
-  </div>
-
-  <button onclick="shareToFacebook()">📤 Share to Facebook</button>
-
-  <div class="footer">
-    <p><a href="https://www.nrl.com/scores/" target="_blank">🔗 Official NRL Scores & Ladder</a></p>
-    <p>&copy; 2025 TipPro PNG | Made for PNG Fans 🇵🇬</p>
-  </div>
-
-  <script>
-    const fixtures = {
-      1: [
-        { gameId: 1, teamA: "Broncos", teamB: "Roosters", date: "March 6, 2025", closed: true },
-        { gameId: 2, teamA: "Rabbitohs", teamB: "Bulldogs", date: "March 7, 2025", closed: true },
-        { gameId: 3, teamA: "Panthers", teamB: "Storm", date: "March 7, 2025", closed: false },
-        { gameId: 4, teamA: "Raiders", teamB: "Sharks", date: "March 8, 2025", closed: false },
-        { gameId: 5, teamA: "Titans", teamB: "Dolphins", date: "March 8, 2025", closed: false },
-        { gameId: 6, teamA: "Eels", teamB: "Sea Eagles", date: "March 9, 2025", closed: false },
-        { gameId: 7, teamA: "Cowboys", teamB: "Warriors", date: "March 9, 2025", closed: false },
-        { gameId: 8, teamA: "Knights", teamB: "Tigers", date: "March 10, 2025", closed: false }
-      ]
-      // Add more rounds later
-    };
-
-    let currentRound = 1;
-    const accumulator = [];
-    const stakeInput = document.getElementById("stakeInput");
-
-    const roundSelect = document.getElementById("roundSelect");
-    const gamesContainer = document.getElementById("gamesContainer");
-    const totalOddsDisplay = document.getElementById("totalOdds");
-    const potentialWinDisplay = document.getElementById("potentialWin");
-    const accumulatorList = document.getElementById("accumulatorList");
-
-    function initRounds() {
-      for (let round in fixtures) {
-        const option = document.createElement("option");
-        option.value = round;
-        option.textContent = `Round ${round}`;
-        roundSelect.appendChild(option);
-      }
-      roundSelect.value = currentRound;
-      roundSelect.addEventListener("change", () => {
-        currentRound = parseInt(roundSelect.value);
-        renderGames();
-      });
-    }
-
-    function renderGames() {
-      gamesContainer.innerHTML = "";
-      const games = fixtures[currentRound];
-      games.forEach((game) => {
-        const div = document.createElement("div");
-        div.className = "game";
-        div.innerHTML = `
-          <strong>${game.teamA} vs ${game.teamB}</strong><br/>
-          <small>${game.date}</small><br/>
-          ${game.closed ? '<em>Tips Closed</em>' : `
-            <button onclick="addTip(${game.gameId}, '${game.teamA}', 1.9)">Tip ${game.teamA}</button>
-            <button onclick="addTip(${game.gameId}, '${game.teamB}', 1.9)">Tip ${game.teamB}</button>
-          `}
-        `;
-        gamesContainer.appendChild(div);
-      });
-      updateAccumulator();
-    }
-
-    function addTip(gameId, team, odds) {
-      if (!accumulator.some(bet => bet.gameId === gameId)) {
-        accumulator.push({ gameId, team, odds });
-        updateAccumulator();
-      }
-    }
-
-    function updateAccumulator() {
-      let totalOdds = accumulator.reduce((acc, bet) => acc * bet.odds, 1);
-      totalOddsDisplay.textContent = totalOdds.toFixed(2);
-
-      const stake = parseFloat(stakeInput.value || "0");
-      potentialWinDisplay.textContent = (stake * totalOdds).toFixed(2);
-
-      accumulatorList.innerHTML = "";
-      accumulator.forEach((bet) => {
-        const p = document.createElement("p");
-        p.textContent = `${bet.team}`;
-        accumulatorList.appendChild(p);
-      });
-    }
-
-    function shareToFacebook() {
-      const tipsText = accumulator.map(bet => {
-        const game = fixtures[currentRound].find(g => g.gameId === bet.gameId);
-        return `${game.teamA} vs ${game.teamB} – ${bet.team}`;
-      });
-      const message = `🏉 My NRL TipPro Round ${currentRound} Tips:\n\n${tipsText.join('\n')}\n\n#NRLTipPro #NRL`;
-      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(message)}`;
-      window.open(fbUrl, "_blank");
-    }
-
-    initRounds();
-    renderGames();
-  </script>
-
-</body>
-</html>
+const fixtures = {
+  18: [
+    { home: "Panthers", away: "Storm" },
+    { home: "Broncos", away: "Rabbitohs" },
+    { home: "Cowboys", away: "Titans" },
+    { home: "Raiders", away: "Sharks" },
+    { home: "Roosters", away: "Bulldogs" },
+    { home: "Knights", away: "Sea Eagles" },
+    { home: "Warriors", away: "Dragons" },
+    { home: "Tigers", away: "Eels" }
+  ],
+  19: [
+    { home: "Storm", away: "Roosters" },
+    { home: "Sharks", away: "Panthers" },
+    { home: "Rabbitohs", away: "Cowboys" },
+    { home: "Titans", away: "Raiders" },
+    { home: "Eels", away: "Broncos" },
+    { home: "Sea Eagles", away: "Tigers" },
+    { home: "Bulldogs", away: "Warriors" },
+    { home: "Dragons", away: "Knights" }
+  ],
+  20: [
+    { home: "Panthers", away: "Eels" },
+    { home: "Broncos", away: "Sea Eagles" },
+    { home: "Storm", away: "Bulldogs" },
+    { home: "Cowboys", away: "Warriors" },
+    { home: "Sharks", away: "Dragons" },
+    { home: "Raiders", away: "Knights" },
+    { home: "Roosters", away: "Titans" },
+    { home: "Rabbitohs", away: "Tigers" }
+  ],
+  21: [
+    { home: "Eels", away: "Cowboys" },
+    { home: "Tigers", away: "Panthers" },
+    { home: "Sea Eagles", away: "Sharks" },
+    { home: "Titans", away: "Rabbitohs" },
+    { home: "Warriors", away: "Storm" },
+    { home: "Bulldogs", away: "Broncos" },
+    { home: "Knights", away: "Roosters" },
+    { home: "Dragons", away: "Raiders" }
+  ],
+  22: [
+    { home: "Broncos", away: "Warriors" },
+    { home: "Rabbitohs", away: "Dragons" },
+    { home: "Panthers", away: "Sea Eagles" },
+    { home: "Storm", away: "Titans" },
+    { home: "Cowboys", away: "Roosters" },
+    { home: "Sharks", away: "Eels" },
+    { home: "Raiders", away: "Tigers" },
+    { home: "Knights", away: "Bulldogs" }
+  ],
+  23: [
+    { home: "Tigers", away: "Sharks" },
+    { home: "Warriors", away: "Panthers" },
+    { home: "Sea Eagles", away: "Bulldogs" },
+    { home: "Titans", away: "Knights" },
+    { home: "Storm", away: "Raiders" },
+    { home: "Cowboys", away: "Broncos" },
+    { home: "Dragons", away: "Roosters" },
+    { home: "Rabbitohs", away: "Eels" }
+  ],
+  24: [
+    { home: "Eels", away: "Sea Eagles" },
+    { home: "Broncos", away: "Storm" },
+    { home: "Roosters", away: "Rabbitohs" },
+    { home: "Panthers", away: "Titans" },
+    { home: "Sharks", away: "Cowboys" },
+    { home: "Raiders", away: "Bulldogs" },
+    { home: "Knights", away: "Tigers" },
+    { home: "Dragons", away: "Warriors" }
+  ],
+  25: [
+    { home: "Rabbitohs", away: "Knights" },
+    { home: "Sea Eagles", away: "Cowboys" },
+    { home: "Storm", away: "Sharks" },
+    { home: "Panthers", away: "Raiders" },
+    { home: "Roosters", away: "Eels" },
+    { home: "Titans", away: "Dragons" },
+    { home: "Bulldogs", away: "Tigers" },
+    { home: "Warriors", away: "Broncos" }
+  ],
+  26: [
+    { home: "Eels", away: "Titans" },
+    { home: "Broncos", away: "Sea Eagles" },
+    { home: "Storm", away: "Rabbitohs" },
+    { home: "Cowboys", away: "Knights" },
+    { home: "Sharks", away: "Bulldogs" },
+    { home: "Raiders", away: "Roosters" },
+    { home: "Panthers", away: "Warriors" },
+    { home: "Tigers", away: "Dragons" }
+  ],
+  27: [
+    { home: "Tigers", away: "Panthers" },
+    { home: "Rabbitohs", away: "Sharks" },
+    { home: "Sea Eagles", away: "Storm" },
+    { home: "Titans", away: "Broncos" },
+    { home: "Warriors", away: "Eels" },
+    { home: "Bulldogs", away: "Cowboys" },
+    { home: "Knights", away: "Raiders" },
+    { home: "Roosters", away: "Dragons" }
+  ]
+};
