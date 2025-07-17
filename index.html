@@ -1,102 +1,153 @@
-const fixtures = {
-  18: [
-    { home: "Panthers", away: "Storm" },
-    { home: "Broncos", away: "Rabbitohs" },
-    { home: "Cowboys", away: "Titans" },
-    { home: "Raiders", away: "Sharks" },
-    { home: "Roosters", away: "Bulldogs" },
-    { home: "Knights", away: "Sea Eagles" },
-    { home: "Warriors", away: "Dragons" },
-    { home: "Tigers", away: "Eels" }
-  ],
-  19: [
-    { home: "Storm", away: "Roosters" },
-    { home: "Sharks", away: "Panthers" },
-    { home: "Rabbitohs", away: "Cowboys" },
-    { home: "Titans", away: "Raiders" },
-    { home: "Eels", away: "Broncos" },
-    { home: "Sea Eagles", away: "Tigers" },
-    { home: "Bulldogs", away: "Warriors" },
-    { home: "Dragons", away: "Knights" }
-  ],
-  20: [
-    { home: "Panthers", away: "Eels" },
-    { home: "Broncos", away: "Sea Eagles" },
-    { home: "Storm", away: "Bulldogs" },
-    { home: "Cowboys", away: "Warriors" },
-    { home: "Sharks", away: "Dragons" },
-    { home: "Raiders", away: "Knights" },
-    { home: "Roosters", away: "Titans" },
-    { home: "Rabbitohs", away: "Tigers" }
-  ],
-  21: [
-    { home: "Eels", away: "Cowboys" },
-    { home: "Tigers", away: "Panthers" },
-    { home: "Sea Eagles", away: "Sharks" },
-    { home: "Titans", away: "Rabbitohs" },
-    { home: "Warriors", away: "Storm" },
-    { home: "Bulldogs", away: "Broncos" },
-    { home: "Knights", away: "Roosters" },
-    { home: "Dragons", away: "Raiders" }
-  ],
-  22: [
-    { home: "Broncos", away: "Warriors" },
-    { home: "Rabbitohs", away: "Dragons" },
-    { home: "Panthers", away: "Sea Eagles" },
-    { home: "Storm", away: "Titans" },
-    { home: "Cowboys", away: "Roosters" },
-    { home: "Sharks", away: "Eels" },
-    { home: "Raiders", away: "Tigers" },
-    { home: "Knights", away: "Bulldogs" }
-  ],
-  23: [
-    { home: "Tigers", away: "Sharks" },
-    { home: "Warriors", away: "Panthers" },
-    { home: "Sea Eagles", away: "Bulldogs" },
-    { home: "Titans", away: "Knights" },
-    { home: "Storm", away: "Raiders" },
-    { home: "Cowboys", away: "Broncos" },
-    { home: "Dragons", away: "Roosters" },
-    { home: "Rabbitohs", away: "Eels" }
-  ],
-  24: [
-    { home: "Eels", away: "Sea Eagles" },
-    { home: "Broncos", away: "Storm" },
-    { home: "Roosters", away: "Rabbitohs" },
-    { home: "Panthers", away: "Titans" },
-    { home: "Sharks", away: "Cowboys" },
-    { home: "Raiders", away: "Bulldogs" },
-    { home: "Knights", away: "Tigers" },
-    { home: "Dragons", away: "Warriors" }
-  ],
-  25: [
-    { home: "Rabbitohs", away: "Knights" },
-    { home: "Sea Eagles", away: "Cowboys" },
-    { home: "Storm", away: "Sharks" },
-    { home: "Panthers", away: "Raiders" },
-    { home: "Roosters", away: "Eels" },
-    { home: "Titans", away: "Dragons" },
-    { home: "Bulldogs", away: "Tigers" },
-    { home: "Warriors", away: "Broncos" }
-  ],
-  26: [
-    { home: "Eels", away: "Titans" },
-    { home: "Broncos", away: "Sea Eagles" },
-    { home: "Storm", away: "Rabbitohs" },
-    { home: "Cowboys", away: "Knights" },
-    { home: "Sharks", away: "Bulldogs" },
-    { home: "Raiders", away: "Roosters" },
-    { home: "Panthers", away: "Warriors" },
-    { home: "Tigers", away: "Dragons" }
-  ],
-  27: [
-    { home: "Tigers", away: "Panthers" },
-    { home: "Rabbitohs", away: "Sharks" },
-    { home: "Sea Eagles", away: "Storm" },
-    { home: "Titans", away: "Broncos" },
-    { home: "Warriors", away: "Eels" },
-    { home: "Bulldogs", away: "Cowboys" },
-    { home: "Knights", away: "Raiders" },
-    { home: "Roosters", away: "Dragons" }
-  ]
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NRL TipPro - Your Ultimate NRL Tipping Companion</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Your existing custom styles */
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const allRounds = {
+            18: [
+                { id: 171, match: "Cowboys vs Bulldogs", date: "2025-07-10", time: "7:50PM" },
+                { id: 172, match: "Warriors vs Storm", date: "2025-07-11", time: "6:00PM" },
+                { id: 173, match: "Panthers vs Sharks", date: "2025-07-11", time: "7:55PM" },
+                { id: 174, match: "Roosters vs Tigers", date: "2025-07-12", time: "3:00PM" },
+                { id: 175, match: "Dolphins vs Raiders", date: "2025-07-12", time: "5:30PM" },
+                { id: 176, match: "Broncos vs Dragons", date: "2025-07-12", time: "7:35PM" },
+                { id: 177, match: "Titans vs Knights", date: "2025-07-13", time: "2:00PM" },
+                { id: 178, match: "Rabbitohs vs Eels", date: "2025-07-13", time: "4:05PM" },
+            ],
+            19: [
+                { id: 191, match: "Storm vs Cowboys", date: "2025-07-17", time: "7:50PM" },
+                { id: 192, match: "Dragons vs Tigers", date: "2025-07-18", time: "6:00PM" },
+                { id: 193, match: "Rabbitohs vs Panthers", date: "2025-07-18", time: "7:55PM" },
+                { id: 194, match: "Broncos vs Titans", date: "2025-07-19", time: "3:00PM" },
+                { id: 195, match: "Knights vs Warriors", date: "2025-07-19", time: "5:30PM" },
+                { id: 196, match: "Sharks vs Roosters", date: "2025-07-19", time: "7:35PM" },
+                { id: 197, match: "Eels vs Dolphins", date: "2025-07-20", time: "2:00PM" },
+                { id: 198, match: "Bulldogs vs Raiders", date: "2025-07-20", time: "4:05PM" },
+            ],
+            // Continue this for other rounds as needed
+        };
+
+        const [round, setRound] = useState(18); // Default to Round 18
+        const [accumulator, setAccumulator] = useState([]);
+        const [stake, setStake] = useState(0);
+
+        const addToAccumulator = (gameId, team, odds) => {
+            setAccumulator([...accumulator, { gameId, team, odds }]);
+        };
+
+        const removeFromAccumulator = (gameId) => {
+            setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
+        };
+
+        return (
+            <div className="container mx-auto px-4">
+                <h1 className="text-4xl text-center font-bold text-blue-600">NRL TipPro 2025</h1>
+
+                <div className="mt-4 mb-8 text-center">
+                    <label htmlFor="roundSelect" className="mr-2">Select Round: </label>
+                    <select id="roundSelect" value={round} onChange={(e) => setRound(Number(e.target.value))} className="p-2 rounded">
+                        {Object.keys(allRounds).map((roundNum) => (
+                            <option key={roundNum} value={roundNum}>Round {roundNum}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    {allRounds[round].map((game) => (
+                        <div key={game.id} className="p-4 bg-gray-200 rounded-lg">
+                            <div className="text-xl font-semibold">{game.match}</div>
+                            <div className="text-gray-600">{game.date} at {game.time}</div>
+
+                            <div className="mt-4">
+                                <button
+                                    className="w-full bg-green-500 text-white py-2 rounded"
+                                    onClick={() => addToAccumulator(game.id, game.match, 2.5)} // Example odds of 2.5
+                                >
+                                    Add to Accumulator
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="mt-8">
+                    <h2 className="text-2xl font-semibold">Your Accumulator</h2>
+                    <ul>
+                        {accumulator.map((bet) => (
+                            <li key={bet.gameId} className="mt-2">
+                                {bet.team} - {bet.odds} odds
+                                <button
+                                    className="text-red-500 ml-2"
+                                    onClick={() => removeFromAccumulator(bet.gameId)}
+                                >
+                                    Remove
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+
+                    <div className="mt-4">
+                        <span>Stake: </span>
+                        <input
+                            type="number"
+                            value={stake}
+                            onChange={(e) => setStake(Number(e.target.value))}
+                            className="p-2 border rounded"
+                            min="1"
+                        />
+                    </div>
+                </div>
+
+                <div className="mt-8">
+                    <h2 className="text-2xl font-semibold">NRL Resources</h2>
+                    <ul className="space-y-2">
+                        <li>
+                            <a href="https://www.nrl.com/news/" className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                                📰 Official NRL News
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.nrl.com/stats/" className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                                📊 NRL Stats Centre
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.youtube.com/nrl" className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                                🎥 NRL Highlights on YouTube
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div className="mt-8">
+                    <h2 className="text-2xl font-semibold">Pacific Racing Weekly Tips</h2>
+                    <p className="mt-2 text-gray-700">
+                        Enhance your NRL tipping with expert insights from Pacific Racing's weekly guide. Published every Thursday, this guide offers predictions, betting strategies, and more.
+                    </p>
+                    <a href="https://www.pngfacts.com/png-information-directory/pacific-racing-and-sports-betting-guides" target="_blank" class="mt-4 inline-block bg-yellow-500 text-black font-bold py-2 px-4 rounded hover:bg-yellow-600">
+                        View Weekly Tips
+                    </a>
+                </div>
+
+            </div>
+        );
+    </script>
+</body>
+</html>
