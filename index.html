@@ -1,146 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NRL TipPro</title>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .bg-png {
-            background-color: #FFCC00; /* PNG Flag Yellow */
-        }
-        .text-png-red {
-            color: #D00000; /* PNG Flag Red */
-        }
-        .text-png-black {
-            color: #000000; /* PNG Flag Black */
-        }
-        .text-png-gold {
-            color: #FFD700; /* PNG Flag Gold */
-        }
-        .btn {
-            background-color: #FFD700; /* PNG Gold */
-            color: #000;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background-color: #D00000;
-            color: #fff;
-        }
-        .accumulator-card {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            padding: 20px;
-            border-radius: 10px;
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NRL TipPro 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fffbf2;
+      color: #333;
+      padding: 1rem;
+    }
+    h1 {
+      background-color: #006400;
+      color: white;
+      padding: 0.5rem;
+      text-align: center;
+      border-radius: 10px;
+    }
+    .game, .round-selector {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #f0f0f0;
+      border-radius: 10px;
+    }
+    button {
+      margin-top: 0.5rem;
+      padding: 0.4rem 1rem;
+      border: none;
+      border-radius: 5px;
+      background-color: #008000;
+      color: white;
+      cursor: pointer;
+    }
+    .disabled {
+      background-color: #999 !important;
+      cursor: not-allowed;
+    }
+    .accumulator {
+      background: #e6ffe6;
+      padding: 1rem;
+      border-radius: 10px;
+      margin: 1rem 0;
+    }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    select, input {
+      padding: 0.3rem;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState } = React;
+  <h1>🏉 NRL TipPro 2025</h1>
 
-        function App() {
-            const [accumulator, setAccumulator] = useState([]);
-            const [stake, setStake] = useState(0);
-            const [games] = useState([
-                { id: 1, homeTeam: "Team A", awayTeam: "Team B", odds: { home: 1.5, away: 2.8 } },
-                { id: 2, homeTeam: "Team C", awayTeam: "Team D", odds: { home: 1.7, away: 2.5 } },
-                { id: 3, homeTeam: "Team E", awayTeam: "Team F", odds: { home: 1.3, away: 3.0 } },
-                { id: 4, homeTeam: "Team G", awayTeam: "Team H", odds: { home: 1.9, away: 2.3 } },
-                { id: 5, homeTeam: "Team I", awayTeam: "Team J", odds: { home: 2.1, away: 1.7 } },
-                { id: 6, homeTeam: "Team K", awayTeam: "Team L", odds: { home: 1.6, away: 2.6 } },
-                { id: 7, homeTeam: "Team M", awayTeam: "Team N", odds: { home: 1.4, away: 2.7 } },
-                { id: 8, homeTeam: "Team O", awayTeam: "Team P", odds: { home: 1.8, away: 2.2 } },
-            ]);
+  <div class="round-selector">
+    <label for="roundSelect"><strong>Select Round:</strong></label>
+    <select id="roundSelect"></select>
+  </div>
 
-            const addToAccumulator = (gameId, team, odds) => {
-                setAccumulator([...accumulator, { gameId, team, odds }]);
-            };
+  <div id="gamesContainer"></div>
 
-            const removeFromAccumulator = (gameId) => {
-                setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
-            };
+  <div class="accumulator" id="accumulatorSection">
+    <h3>💰 Accumulator</h3>
+    <label>Stake: $<input type="number" id="stakeInput" value="10" min="1" /></label>
+    <p>Total Odds: <span id="totalOdds">0.00</span></p>
+    <p>Potential Win: $<span id="potentialWin">0.00</span></p>
+    <div id="accumulatorList"></div>
+  </div>
 
-            const calculateAccumulatorOdds = () => {
-                return accumulator.reduce((total, bet) => total * bet.odds, 1);
-            };
+  <button onclick="shareToFacebook()">📤 Share to Facebook</button>
 
-            const calculatePotentialWin = () => {
-                return stake * calculateAccumulatorOdds();
-            };
+  <div class="footer">
+    <p><a href="https://www.nrl.com/scores/" target="_blank">🔗 Official NRL Scores & Ladder</a></p>
+    <p>&copy; 2025 TipPro PNG | Made for PNG Fans 🇵🇬</p>
+  </div>
 
-            return (
-                <div className="container mx-auto p-4">
-                    <h1 className="text-center text-4xl font-bold text-png-red">NRL TipPro</h1>
+  <script>
+    const fixtures = {
+      1: [
+        { gameId: 1, teamA: "Broncos", teamB: "Roosters", date: "March 6, 2025", closed: true },
+        { gameId: 2, teamA: "Rabbitohs", teamB: "Bulldogs", date: "March 7, 2025", closed: true },
+        { gameId: 3, teamA: "Panthers", teamB: "Storm", date: "March 7, 2025", closed: false },
+        { gameId: 4, teamA: "Raiders", teamB: "Sharks", date: "March 8, 2025", closed: false },
+        { gameId: 5, teamA: "Titans", teamB: "Dolphins", date: "March 8, 2025", closed: false },
+        { gameId: 6, teamA: "Eels", teamB: "Sea Eagles", date: "March 9, 2025", closed: false },
+        { gameId: 7, teamA: "Cowboys", teamB: "Warriors", date: "March 9, 2025", closed: false },
+        { gameId: 8, teamA: "Knights", teamB: "Tigers", date: "March 10, 2025", closed: false }
+      ]
+      // Add more rounds later
+    };
 
-                    <div className="mt-6">
-                        <h2 className="text-2xl font-semibold">NRL Matches</h2>
-                        <div className="grid grid-cols-2 gap-4 mt-4">
-                            {games.map(game => (
-                                <div key={game.id} className="bg-white p-4 rounded-lg shadow-md">
-                                    <h3 className="text-xl font-semibold">{game.homeTeam} vs {game.awayTeam}</h3>
-                                    <div className="mt-2">
-                                        <button onClick={() => addToAccumulator(game.id, game.homeTeam, game.odds.home)} className="btn">Home - Odds: {game.odds.home}</button>
-                                        <button onClick={() => addToAccumulator(game.id, game.awayTeam, game.odds.away)} className="btn">Away - Odds: {game.odds.away}</button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+    let currentRound = 1;
+    const accumulator = [];
+    const stakeInput = document.getElementById("stakeInput");
 
-                    <div className="accumulator-card mt-6">
-                        <h3 className="text-xl font-bold">Accumulator</h3>
-                        {accumulator.length > 0 ? (
-                            <div>
-                                {accumulator.map(bet => (
-                                    <div key={bet.gameId}>
-                                        <div>{bet.team} - Odds: {bet.odds}</div>
-                                        <button onClick={() => removeFromAccumulator(bet.gameId)} className="text-white text-sm bg-red-500 px-2 py-1 rounded">Remove</button>
-                                    </div>
-                                ))}
-                                <div className="mt-4">Total Odds: {calculateAccumulatorOdds().toFixed(2)}</div>
-                                <div className="mt-2">Potential Win: ${calculatePotentialWin().toFixed(2)}</div>
-                            </div>
-                        ) : (
-                            <div>Add games to your accumulator for bigger potential wins!</div>
-                        )}
-                    </div>
+    const roundSelect = document.getElementById("roundSelect");
+    const gamesContainer = document.getElementById("gamesContainer");
+    const totalOddsDisplay = document.getElementById("totalOdds");
+    const potentialWinDisplay = document.getElementById("potentialWin");
+    const accumulatorList = document.getElementById("accumulatorList");
 
-                    <div className="mt-6 text-center">
-                        <h2 className="text-2xl font-semibold">Live Scores & Ladder</h2>
-                        <p>For live updates, check the official NRL sites:</p>
-                        <div className="mt-4">
-                            <a href="https://www.nrl.com/draw/" target="_blank" className="btn">Live Scores</a>
-                            <a href="https://www.nrl.com/ladder/" target="_blank" className="btn">NRL Ladder</a>
-                        </div>
-                    </div>
+    function initRounds() {
+      for (let round in fixtures) {
+        const option = document.createElement("option");
+        option.value = round;
+        option.textContent = `Round ${round}`;
+        roundSelect.appendChild(option);
+      }
+      roundSelect.value = currentRound;
+      roundSelect.addEventListener("change", () => {
+        currentRound = parseInt(roundSelect.value);
+        renderGames();
+      });
+    }
 
-                    <div className="mt-6 text-center">
-                        <h2 className="text-2xl font-semibold">Last Week's Results & Ladder</h2>
-                        <p>For last week's results and the updated NRL ladder, check the official NRL sites:</p>
-                        <div className="mt-4">
-                            <a href="https://www.nrl.com/draw/" target="_blank" class="btn">Last Week's Results</a>
-                            <a href="https://www.nrl.com/ladder/" target="_blank" class="btn">Last Week's Ladder</a>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
+    function renderGames() {
+      gamesContainer.innerHTML = "";
+      const games = fixtures[currentRound];
+      games.forEach((game) => {
+        const div = document.createElement("div");
+        div.className = "game";
+        div.innerHTML = `
+          <strong>${game.teamA} vs ${game.teamB}</strong><br/>
+          <small>${game.date}</small><br/>
+          ${game.closed ? '<em>Tips Closed</em>' : `
+            <button onclick="addTip(${game.gameId}, '${game.teamA}', 1.9)">Tip ${game.teamA}</button>
+            <button onclick="addTip(${game.gameId}, '${game.teamB}', 1.9)">Tip ${game.teamB}</button>
+          `}
+        `;
+        gamesContainer.appendChild(div);
+      });
+      updateAccumulator();
+    }
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-    </script>
+    function addTip(gameId, team, odds) {
+      if (!accumulator.some(bet => bet.gameId === gameId)) {
+        accumulator.push({ gameId, team, odds });
+        updateAccumulator();
+      }
+    }
+
+    function updateAccumulator() {
+      let totalOdds = accumulator.reduce((acc, bet) => acc * bet.odds, 1);
+      totalOddsDisplay.textContent = totalOdds.toFixed(2);
+
+      const stake = parseFloat(stakeInput.value || "0");
+      potentialWinDisplay.textContent = (stake * totalOdds).toFixed(2);
+
+      accumulatorList.innerHTML = "";
+      accumulator.forEach((bet) => {
+        const p = document.createElement("p");
+        p.textContent = `${bet.team}`;
+        accumulatorList.appendChild(p);
+      });
+    }
+
+    function shareToFacebook() {
+      const tipsText = accumulator.map(bet => {
+        const game = fixtures[currentRound].find(g => g.gameId === bet.gameId);
+        return `${game.teamA} vs ${game.teamB} – ${bet.team}`;
+      });
+      const message = `🏉 My NRL TipPro Round ${currentRound} Tips:\n\n${tipsText.join('\n')}\n\n#NRLTipPro #NRL`;
+      const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(message)}`;
+      window.open(fbUrl, "_blank");
+    }
+
+    initRounds();
+    renderGames();
+  </script>
+
 </body>
 </html>
