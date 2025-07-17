@@ -1,248 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NRL TipPro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body class="bg-gray-100 text-gray-900">
-    <div id="root" class="p-4"></div>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .bg-png {
+            background-color: #FFCC00; /* PNG Flag Yellow */
+        }
+        .text-png-red {
+            color: #D00000; /* PNG Flag Red */
+        }
+        .text-png-black {
+            color: #000000; /* PNG Flag Black */
+        }
+        .text-png-gold {
+            color: #FFD700; /* PNG Flag Gold */
+        }
+        .btn {
+            background-color: #FFD700; /* PNG Gold */
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #D00000;
+            color: #fff;
+        }
+        .accumulator-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
     <script type="text/babel">
-      function App() {
-        const games = [
-          {
-            id: 1,
-            homeTeam: { name: "Panthers", logo: "🐾" },
-            awayTeam: { name: "Broncos", logo: "🐎" },
-            odds: { home: 1.75, away: 2.10 },
-            weather: { condition: "Sunny", temp: 28, wind: "15km/h" },
-          },
-        ];
+        const { useState } = React;
 
-        const [accumulator, setAccumulator] = React.useState([]);
-        const [stake, setStake] = React.useState(0);function App() {
-  const [games, setGames] = React.useState([]);
-  const [accumulator, setAccumulator] = React.useState([]);
-  const [stake, setStake] = React.useState(0);
+        function App() {
+            const [accumulator, setAccumulator] = useState([]);
+            const [stake, setStake] = useState(0);
+            const [games] = useState([
+                { id: 1, homeTeam: "Team A", awayTeam: "Team B", odds: { home: 1.5, away: 2.8 } },
+                { id: 2, homeTeam: "Team C", awayTeam: "Team D", odds: { home: 1.7, away: 2.5 } },
+                { id: 3, homeTeam: "Team E", awayTeam: "Team F", odds: { home: 1.3, away: 3.0 } },
+                { id: 4, homeTeam: "Team G", awayTeam: "Team H", odds: { home: 1.9, away: 2.3 } },
+                { id: 5, homeTeam: "Team I", awayTeam: "Team J", odds: { home: 2.1, away: 1.7 } },
+                { id: 6, homeTeam: "Team K", awayTeam: "Team L", odds: { home: 1.6, away: 2.6 } },
+                { id: 7, homeTeam: "Team M", awayTeam: "Team N", odds: { home: 1.4, away: 2.7 } },
+                { id: 8, homeTeam: "Team O", awayTeam: "Team P", odds: { home: 1.8, away: 2.2 } },
+            ]);
 
-  const addToAccumulator = (gameId, team, odds) => {
-    setAccumulator([...accumulator, { gameId, team, odds }]);
-  };
+            const addToAccumulator = (gameId, team, odds) => {
+                setAccumulator([...accumulator, { gameId, team, odds }]);
+            };
 
-  const removeFromAccumulator = (gameId) => {
-    setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
-  };
+            const removeFromAccumulator = (gameId) => {
+                setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
+            };
 
-  // ... rest of your logic
+            const calculateAccumulatorOdds = () => {
+                return accumulator.reduce((total, bet) => total * bet.odds, 1);
+            };
 
-        const addToAccumulator = (gameId, team, odds) => {
-          setAccumulator([...accumulator, { gameId, team, odds }]);
-        };
+            const calculatePotentialWin = () => {
+                return stake * calculateAccumulatorOdds();
+            };
 
-        const removeFromAccumulator = (gameId) => {
-          setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
-        };
+            return (
+                <div className="container mx-auto p-4">
+                    <h1 className="text-center text-4xl font-bold text-png-red">NRL TipPro</h1>
 
-        return (
-          <divfunction App() {
-  // 🧠 This is where you define state and functions
-  const [accumulator, setAccumulator] = React.useState([]);
-  const [stake, setStake] = React.useState(0);
-          className="max-w-xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">🏉 NRL TipPro</h1>
-            {games.map(game => (
-              <<div className="my-4 p-4 bg-white rounded shadow">
-  <h2 className="text-xl font-bold mb-2">Accumulator</h2>
-  <div className="flex items-center gap-2">
-    <label className="font-semibold">Stake ($):</label>
-    <input
-      type="number"
-      className="px-2 py-1 border rounded text-black"
-      value={stake}
-      onChange={(e) => setStake(Number(e.target.value))}
-      min={1}
-    />
-  </div>
+                    <div className="mt-6">
+                        <h2 className="text-2xl font-semibold">NRL Matches</h2>
+                        <div className="grid grid-cols-2 gap-4 mt-4">
+                            {games.map(game => (
+                                <div key={game.id} className="bg-white p-4 rounded-lg shadow-md">
+                                    <h3 className="text-xl font-semibold">{game.homeTeam} vs {game.awayTeam}</h3>
+                                    <div className="mt-2">
+                                        <button onClick={() => addToAccumulator(game.id, game.homeTeam, game.odds.home)} className="btn">Home - Odds: {game.odds.home}</button>
+                                        <button onClick={() => addToAccumulator(game.id, game.awayTeam, game.odds.away)} className="btn">Away - Odds: {game.odds.away}</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
 
-  <div className="mt-2">
-    <p className="text-sm text-gray-600">Games Added:</p>
-    {accumulator.length === 0 ? (
-      <p className="italic text-gray-500">No games added yet.</p>
-    ) : (
-      <ul className="list-disc pl-4">
-        {accumulator.map((item, idx) => (
-          <li key={idx}>
-            {item.team} (Odds: {item.odds})
-            <button
-              onClick={() => removeFromAccumulator(item.gameId)}
-              className="ml-2 text-red-500 hover:underline"
-            >
-              Remove
-            </button>
-          </li>
-        ))}
-      </ul>
-    )}
-  </div>
+                    <div className="accumulator-card mt-6">
+                        <h3 className="text-xl font-bold">Accumulator</h3>
+                        {accumulator.length > 0 ? (
+                            <div>
+                                {accumulator.map(bet => (
+                                    <div key={bet.gameId}>
+                                        <div>{bet.team} - Odds: {bet.odds}</div>
+                                        <button onClick={() => removeFromAccumulator(bet.gameId)} className="text-white text-sm bg-red-500 px-2 py-1 rounded">Remove</button>
+                                    </div>
+                                ))}
+                                <div className="mt-4">Total Odds: {calculateAccumulatorOdds().toFixed(2)}</div>
+                                <div className="mt-2">Potential Win: ${calculatePotentialWin().toFixed(2)}</div>
+                            </div>
+                        ) : (
+                            <div>Add games to your accumulator for bigger potential wins!</div>
+                        )}
+                    </div>
 
-  <div className="mt-2 font-semibold">
-    Total Odds: {
-      accumulator.reduce((total, item) => total * item.odds, 1).toFixed(2)
-    } <br />
-    Potential Win: ${(stake * accumulator.reduce((total, item) => total * item.odds, 1)).toFixed(2)}
-  </div>
-</div>div key={game.id} className="bg-white p-4 rounded shadow mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <div>{game.homeTeam.logo} {game.homeTeam.name}</div>
-                  <div>vs</div>
-                  <div>{game.awayTeam.name} {game.awayTeam.logo}</div>
+                    <div className="mt-6 text-center">
+                        <h2 className="text-2xl font-semibold">Live Scores & Ladder</h2>
+                        <p>For live updates, check the official NRL sites:</p>
+                        <div className="mt-4">
+                            <a href="https://www.nrl.com/draw/" target="_blank" className="btn">Live Scores</a>
+                            <a href="https://www.nrl.com/ladder/" target="_blank" className="btn">NRL Ladder</a>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 text-center">
+                        <h2 className="text-2xl font-semibold">Last Week's Results & Ladder</h2>
+                        <p>For last week's results and the updated NRL ladder, check the official NRL sites:</p>
+                        <div className="mt-4">
+                            <a href="https://www.nrl.com/draw/" target="_blank" class="btn">Last Week's Results</a>
+                            <a href="https://www.nrl.com/ladder/" target="_blank" class="btn">Last Week's Ladder</a>
+                        </div>
+                    </div>
                 </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  Weather: {game.weather.condition}, {game.weather.temp}°C, Wind {game.weather.wind}
-                </div>
-                <div className="flex justify-between mb-2">
-                  <button className="bg-green-500 text-white px-2 py-1 rounded" onClick={() => addToAccumulator(game.id, game.homeTeam, game.odds.home)}>
-                    + {game.homeTeam.name} (${game.odds.home.toFixed(2)})
-                  </button>
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded" onClick={() => addToAccumulator(game.id, game.awayTeam, game.odds.away)}>
-                    + {game.awayTeam.name} (${game.odds.away.toFixed(2)})
-                  </button>
-                </div>
-              </div>
-            ))}
+            );
+        }
 
-            <div className="bg-gray-800 text-white p-4 rounded mt-6">
-              <h2 className="text-lg font-bold mb-2">Accumulator</h2>
-              {accumulator.length === 0 && <div className="text-sm">No bets added.</div>}
-              {accumulator.map((bet, index) => (
-                <div key={index} className="flex justify-between items-center mb-2">
-                  <div>
-                    <div className="font-semibold">{bet.team.name}</div>
-                    <div className="text-sm">Odds: ${bet.odds.toFixed(2)}</div>
-                  </div>
-                  <button onClick={() => removeFromAccumulator(bet.gameId)} className="bg-red-500 text-white px-2 py-1 rounded text-xs">
-                    Remove
-                  </button>
-                </div>
-              ))}
-              {accumulator.length > 0 && (
-                <div className="mt-4">
-                  <label className="text-sm">Stake: </label>
-                  <input
-                    type="number"
-                    className="text-black px-2 py-1 rounded w-24"
-                    value={stake}
-                    onChange={e => setStake(parseFloat(e.target.value) || 0)}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      }
-
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
-  </body>
-</html><!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NRL TipPro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  </head>
-  <body class="bg-gray-100 text-gray-900">
-    <div id="root" class="p-4"></div>
-
-    <script type="text/babel">
-      function App() {
-        const games = [
-          {
-            id: 1,
-            homeTeam: { name: "Panthers", logo: "🐾" },
-            awayTeam: { name: "Broncos", logo: "🐎" },
-            odds: { home: 1.75, away: 2.10 },
-            weather: { condition: "Sunny", temp: 28, wind: "15km/h" },
-          },
-        ];
-
-        const [accumulator, setAccumulator] = React.useState([]);
-        const [stake, setStake] = React.useState(0);
-
-        const addToAccumulator = (gameId, team, odds) => {
-          setAccumulator([...accumulator, { gameId, team, odds }]);
-        };
-
-        const removeFromAccumulator = (gameId) => {
-          setAccumulator(accumulator.filter(bet => bet.gameId !== gameId));
-        };
-
-        return (
-          <div className="max-w-xl mx-auto">
-            <h1 className="text-2xl font-bold mb-4">🏉 NRL TipPro</h1>
-            {games.map(game => (
-              <div key={game.id} className="bg-white p-4 rounded shadow mb-4">
-                <div className="flex justify-between items-center mb-2">
-                  <div>{game.homeTeam.logo} {game.homeTeam.name}</div>
-                  <div>vs</div>
-                  <div>{game.awayTeam.name} {game.awayTeam.logo}</div>
-                </div>
-                <div className="text-sm text-gray-600 mb-2">
-                  Weather: {game.weather.condition}, {game.weather.temp}°C, Wind {game.weather.wind}
-                </div>
-                <div className="flex justify-between mb-2">
-                  <button className="bg-green-500 text-white px-2 py-1 rounded" onClick={() => addToAccumulator(game.id, game.homeTeam, game.odds.home)}>
-                    + {game.homeTeam.name} (${game.odds.home.toFixed(2)})
-                  </button>
-                  <button className="bg-blue-500 text-white px-2 py-1 rounded" onClick={() => addToAccumulator(game.id, game.awayTeam, game.odds.away)}>
-                    + {game.awayTeam.name} (${game.odds.away.toFixed(2)})
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            <div className="bg-gray-800 text-white p-4 rounded mt-6">
-              <h2 className="text-lg font-bold mb-2">Accumulator</h2>
-              {accumulator.length === 0 && <div className="text-sm">No bets added.</div>}
-              {accumulator.map((bet, index) => (
-                <div key={index} className="flex justify-between items-center mb-2">
-                  <div>
-                    <div className="font-semibold">{bet.team.name}</div>
-                    <div className="text-sm">Odds: ${bet.odds.toFixed(2)}</div>
-                  </div>
-                  <button onClick={() => removeFromAccumulator(bet.gameId)} className="bg-red-500 text-white px-2 py-1 rounded text-xs">
-                    Remove
-                  </button>
-                </div>
-              ))}
-              {accumulator.length > 0 && (
-                <div className="mt-4">
-                  <label className="text-sm">Stake: </label>
-                  <input
-                    type="number"
-                    className="text-black px-2 py-1 rounded w-24"
-                    value={stake}
-                    onChange={e => setStake(parseFloat(e.target.value) || 0)}
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        );
-      }
-
-      const root = ReactDOM.createRoot(document.getElementById("root"));
-      root.render(<App />);
-    </script>
-  </body>
+</body>
 </html>
